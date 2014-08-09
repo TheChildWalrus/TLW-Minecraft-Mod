@@ -4,7 +4,12 @@ import java.lang.reflect.Field;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.Teleporter;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.config.Configuration;
 import tlw.common.item.ItemStepper;
 import cpw.mods.fml.common.*;
@@ -123,6 +128,36 @@ public class TLWMod
 		ModContainer container = FMLCommonHandler.instance().findContainerFor(instance);
 		return container.getModId();
 	}
-}
+	
+	public static void transferEntityToDimension(Entity entity, int newDimension, Teleporter teleporter)
+	{
+        if (!entity.worldObj.isRemote && !entity.isDead)
+        {
+            MinecraftServer minecraftserver = MinecraftServer.getServer();
+            int oldDimension = entity.dimension;
+            WorldServer oldWorld = minecraftserver.worldServerForDimension(oldDimension);
+            WorldServer newWorld = minecraftserver.worldServerForDimension(newDimension);
+            entity.dimension = newDimension;
+            entity.worldObj.removeEntity(entity);
+            entity.isDead = false;
+            minecraftserver.getConfigurationManager().transferEntityToWorld(entity, oldDimension, oldWorld, newWorld, teleporter);
+            Entity newEntity = EntityList.createEntityByName(EntityList.getEntityString(entity), newWorld);
 
+            if (newEntity != null)
+            {
+                newEntity.copyDataFrom(entity, true);
+                newWorld.spawnEntityInWorld(newEntity);
+            }
+
+            entity.isDead = true;
+            oldWorld.resetUpdateEntityTick();
+            newWorld.resetUpdateEntityTick();
+			
+			if (newEntity != null)
+			{
+				newEntity.timeUntilPortal = newEntity.getPortalCooldown();
+			}
+        }
+	}
+}
 	
