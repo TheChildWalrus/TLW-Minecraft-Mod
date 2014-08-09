@@ -1,0 +1,14 @@
+[
+{
+  "modid": "tlw",
+  "name": "The Long Worlds",
+  "description": "Inspired by 'The Long Earth' series",
+  "version": "1.0",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Mevans"],
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
