@@ -5,6 +5,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import tlw.common.TLWMod;
+import tlw.common.item.ItemStepper;
 import tlw.common.world.biome.LongBiome;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,10 +14,15 @@ public class LongWorldProvider extends WorldProvider
 {
 	public int stepID;
 	
+	public LongWorldProvider()
+	{
+		stepID = ItemStepper.stepID;
+	}
+	
 	@Override
     public void registerWorldChunkManager()
     {
-        worldChunkMgr = new LongWorldChunkManager();
+        worldChunkMgr = new LongWorldChunkManager(worldObj, stepID);
         dimensionId = TLWMod.dimensionIDs[0];
     }
     
@@ -72,15 +78,21 @@ public class LongWorldProvider extends WorldProvider
     }*/
 	
 	@Override
-    public BiomeGenBase getBiomeGenForCoords(int i, int k)
-    {
-        return LongBiome.longBiome;
-    }
-	
-	@Override
 	public boolean shouldMapSpin(String entity, double x, double y, double z)
     {
         return false;
+    }
+	
+	@Override
+	protected void generateLightBrightnessTable()
+    {
+        float f = 0F;
+
+        for (int i = 0; i <= 15; ++i)
+        {
+            float f1 = 1F - (float)i / 15F;
+            lightBrightnessTable[i] = (1F - f1) / (f1 * 3F + 1F) * (1F - f) + f;
+        }
     }
 	
 	@Override
@@ -93,7 +105,7 @@ public class LongWorldProvider extends WorldProvider
     @SideOnly(Side.CLIENT)
     public float getCloudHeight()
     {
-        return super.getCloudHeight();
+        return super.getCloudHeight() + LongWorldProperties.getLongProperties(worldObj, stepID).baseHeight * 60F;
     }
        
 	@Override

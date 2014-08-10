@@ -40,6 +40,7 @@ public class LongBiomeDecorator
 
     public static void decorate(LongWorldProperties worldproperties, World world, Random random, int i, int j)
     {
+    	worldProps = worldproperties;
 		worldObj = world;
 		rand = random;
 		chunkX = i;

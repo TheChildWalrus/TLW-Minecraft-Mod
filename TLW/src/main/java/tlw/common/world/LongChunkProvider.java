@@ -270,7 +270,7 @@ public class LongChunkProvider implements IChunkProvider
                 {
                     Block block = blocks[i1 << 12 | k1 << 8 | j1];
 
-                    if (block == Blocks.air)
+                    if (block == Blocks.air || block == null)
                     {
                         continue;
                     }
@@ -328,31 +328,11 @@ public class LongChunkProvider implements IChunkProvider
         {
             for (int var15 = 0; var15 < par7; ++var15)
             {
-                float var16 = 0F;
-                float var17 = 0F;
-                float var18 = 0F;
-                byte var19 = 2;
-                BiomeGenBase var20 = biomesForGeneration[var14 + 2 + (var15 + 2) * (par5 + 5)];
+            	LongWorldProperties props = LongWorldProperties.getLongProperties(worldObj, provider.stepID);
+            	float[] floats = props.getGenerationMinMaxHeight();
+                float var16 = floats[0];
+                float var17 = floats[1];
 
-                for (int var21 = -var19; var21 <= var19; ++var21)
-                {
-                    for (int var22 = -var19; var22 <= var19; ++var22)
-                    {
-                        BiomeGenBase var23 = biomesForGeneration[var14 + var21 + 2 + (var15 + var22 + 2) * (par5 + 5)];
-                        float var24 = biomeHeightNoise[var21 + 2 + (var22 + 2) * 5] / (var23.rootHeight + 2F) / 2F;
-						var24 = Math.abs(var24);
-                        if (var23.rootHeight > var20.rootHeight)
-                        {
-                            var24 /= 2F;
-                        }
-
-                        var16 += var23.heightVariation * var24;
-                        var17 += var23.rootHeight * var24;
-                        var18 += var24;
-                    }
-                }
-                var16 /= var18;
-                var17 /= var18;
                 var16 = var16 * 0.9F + 0.1F;
                 var17 = (var17 * 4F - 1F) / 8F;
                 double var47 = noise6[var13] / 8000D;

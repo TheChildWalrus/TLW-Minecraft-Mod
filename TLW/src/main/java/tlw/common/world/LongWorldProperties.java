@@ -66,8 +66,8 @@ public class LongWorldProperties
         temperature = rand.nextFloat() * 1.2F;
         rainfall = rand.nextFloat() * 1.2F;
         
-        baseHeight = 0F + rand.nextFloat() * 1.5F;
-        heightVariation = 0F + rand.nextFloat() * 1.5F;
+        baseHeight = 0F + rand.nextFloat() * rand.nextFloat() * 1.5F;
+        heightVariation = 0F + rand.nextFloat() * rand.nextFloat() * 1.5F;
         
         lakeChance = rand.nextFloat() * 1F;
         lavaLakeChance = rand.nextFloat() * 0.3F;
@@ -104,6 +104,22 @@ public class LongWorldProperties
         reedsPerChunk = rand.nextInt(20);
         waterFlowPerChunk = rand.nextInt(100);
         lavaFlowPerChunk = Math.round((100 - waterFlowPerChunk) * rand.nextFloat());
+	}
+	
+	public float[] getGenerationMinMaxHeight()
+	{
+		float f = baseHeight;
+		float f1 = heightVariation;
+		
+		f -= 2F;
+        f += 0.2F;
+		if (f == -2F)
+		{
+			f = -1.999F;
+		}
+		f1 /= 2F;
+		
+		return new float[] {f, f1};
 	}
 	
 	public WorldGenerator getRandomTree()
