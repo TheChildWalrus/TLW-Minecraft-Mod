@@ -330,8 +330,8 @@ public class LongChunkProvider implements IChunkProvider
             {
             	LongWorldProperties props = LongWorldProperties.getLongProperties(worldObj, provider.stepID);
             	float[] floats = props.getGenerationMinMaxHeight();
-                float var16 = floats[0];
-                float var17 = floats[1];
+                float var16 = floats[1];
+                float var17 = floats[0];
 
                 var16 = var16 * 0.9F + 0.1F;
                 var17 = (var17 * 4F - 1F) / 8F;

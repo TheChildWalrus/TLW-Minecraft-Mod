@@ -105,7 +105,7 @@ public class LongWorldProvider extends WorldProvider
     @SideOnly(Side.CLIENT)
     public float getCloudHeight()
     {
-        return super.getCloudHeight() + LongWorldProperties.getLongProperties(worldObj, stepID).baseHeight * 60F;
+        return super.getCloudHeight() + Math.max(0F, LongWorldProperties.getLongProperties(worldObj, stepID).baseHeight * 60F);
     }
        
 	@Override
